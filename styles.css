@@ -1,6 +1,8 @@
 
 /* asi */
 .grid { 
-    display: grid; 
-    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px 100px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-auto-rows: 100px;
+    gap: auto;
 }
