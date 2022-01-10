@@ -1,8 +1,11 @@
 
 /* asi */
-.grid { 
+.grid {
+    height: max-content;
+    width: 100%;
+    background-color: powderblue;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    grid-auto-rows: 100px;
+    grid-auto-rows: minmax(30px, auto);;
     gap: auto;
 }
