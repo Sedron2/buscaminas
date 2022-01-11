@@ -1,11 +1,17 @@
-
-/* asi */
 .grid {
-    height: max-content;
-    width: 100%;
-    background-color: powderblue;
+    background-color: indianred;
+    height: 600px;
+    width: 600px;
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-auto-rows: minmax(30px, auto);;
-    gap: auto;
+    grid-auto-rows: minmax(30px, auto);
+    gap: 2px;
+    padding: 2px 2px;
+}
+
+
+span {
+    display: inline-flex;
+    background-color: powderblue;
+    justify-content: center;
+    align-items: center;
 }
