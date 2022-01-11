@@ -1,5 +1,9 @@
+body {
+    background-color: #323232;
+}
+
 .grid {
-    background-color: indianred;
+    background-color: powderblue;
     height: 600px;
     width: 600px;
     display: grid;
@@ -11,7 +15,11 @@
 
 span {
     display: inline-flex;
-    background-color: powderblue;
+    background-color: indianred;
     justify-content: center;
     align-items: center;
+    color: #fff;
+    font-family: Arial;
+    font-weight: bolder;
+    user-select: none;
 }
