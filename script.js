@@ -1,4 +1,4 @@
-let size = 16
+let size = 15
 let minas = 40
 let mina = '■'
 const div = document.querySelector(".grid")
@@ -43,7 +43,7 @@ function clicked(i) {
 let i = 0
 for (cell of bombs) {
 	minas_alrededor = 0;
-	condicion = cell.textContent !== mina && i > size - 1 && i < (size * size) - size && (i + 1) % size != 0 && (i) % size != 0
+	condicion = cell.textContent !== mina && [bombs[0], bombs[size - 1], bombs[size * (size - 1)], bombs[(size * size) - 1]] && (i + 1) % size != 0 && (i) % size != 0
 	if (condicion){
 		try {
 		if (bombs[i - size - 1].textContent == mina)
@@ -96,5 +96,37 @@ function fill_corners() {
 			bombs[0].textContent = minas_alrededor
 	}
 	minas_alrededor = 0
+    if (bombs[size - 1].textContent !== mina ) {
+		if (bombs[size - 2].textContent === mina)
+			minas_alrededor++
+		if (bombs[size + size - 1].textContent === mina)
+			minas_alrededor++
+		if (bombs[size + size - 2].textContent === mina)
+			minas_alrededor++
+		if (minas_alrededor !== 0)
+			bombs[size - 1].textContent = minas_alrededor
+	}
+    minas_alrededor = 0
+    if (bombs[size * (size - 1)].textContent !== mina ) {
+		if (bombs[size * (size - 1) - size].textContent === mina)
+			minas_alrededor++
+		if (bombs[size * (size - 1) - size + 1].textContent === mina)
+			minas_alrededor++
+		if (bombs[size * (size - 1) + 1].textContent === mina)
+			minas_alrededor++
+		if (minas_alrededor !== 0)
+			bombs[size * (size - 1)].textContent = minas_alrededor
+	}
+    minas_alrededor = 0
+    if (bombs[(size * size) - 1].textContent !== mina ) {
+		if (bombs[(size * size) - size - 1].textContent === mina)
+			minas_alrededor++
+		if (bombs[(size * size) - size - 2].textContent === mina)
+			minas_alrededor++
+		if (bombs[(size * size) - 2].textContent === mina)
+			minas_alrededor++
+		if (minas_alrededor !== 0)
+			bombs[(size * size) - 1].textContent = minas_alrededor
+	}
 }
 fill_corners()
