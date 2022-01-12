@@ -1,17 +1,15 @@
-let size = 16
-let minas = 40
+let game = []
 let mina = '💣'
 const div = document.querySelector(".grid")
-const bombs = document.getElementsByTagName("span")
+const cells = document.getElementsByTagName('span')
 
 
-generate_grid(size)
-añadir_event_listeners()
-insertar_bombas()
-agregar_numeros_medio()
-llenar_esquinas()
-llenar_columnas()
-
+generate_grid(16)
+añadir_event_listeners(cells)
+insertar_bombas(16, 40)
+agregar_numeros_medio(16)
+//llenar_esquinas()
+//llenar_columnas()
 
 
 function generate_grid(size) {
@@ -19,108 +17,113 @@ function generate_grid(size) {
 	div.style.gridTemplateColumns = "repeat(" + size + ", 1fr)"
 }
 
-function insertar_bombas(){
-	let cells = []
-	for (let i = 1; i < size * size; i++) {
-		if (minas >= 0){
-			cells.push(0) // agregando los 0s en la lista
-			minas -= 1
-		}
-		else
-			cells.push(1) // llenando el resto de 1
-	}
-
-	desordernar_lista(cells)
-	desordernar_lista(cells) // randomizando
-
-	let f = 0
-	for (cell of bombs) {
-		if (cells[f] === 0)
-			cell.textContent = mina
-		f++
-	} // alterando el HTML para identificar las bombas en base a la lista desordenada
-}
-
-function desordernar_lista(lista) {
-	lista = lista.sort(function () {return Math.random() - 0.5})
-}
-
-function añadir_event_listeners() {
-	for(let i=0;i<bombs.length;i++){
-	   bombs[i].addEventListener("click", function(){clicked(i)}) // añadiendo el eventlistener para cada una de las casillas
+function añadir_event_listeners(cells) {
+	for(let i=0;i<cells.length;i++){
+	   cells[i].addEventListener("click", function an(){clicked(i)}) // añadiendo el eventlistener para cada una de las casillas
+	   cells[i].addEventListener("contextmenu", function an2(ev){ev.preventDefault(); r_clicked(i)})
 	}
 	function clicked(i) {
-		console.log('Has pulsado el numero ' + (i + 1));
+		console.log('Has pulsado el numero ' + (i));
+		if (cells[i].textContent === '🚩') {}
+		else {
+			if (game[i] == mina) {
+				// falta intentar remocer los event listeners
+				setTimeout(mostrar_bombas, 1000)
+				setTimeout(terminar_juego, 3000)
+			}
+			cells[i].textContent = game[i];
+			cells[i].style.backgroundColor = 'grey'
+		}
+	}
+	function r_clicked(i) {
+		if (cells[i].style.backgroundColor !== 'grey')
+			if (cells[i].textContent === '🚩')
+				cells[i].textContent = ' '
+			else
+				cells[i].textContent = '🚩'
 	}
 }
 
-function agregar_numeros_medio() {
-	let i = 0
-	for (cell of bombs) {
+function insertar_bombas(size, quantity){
+	for (let i = 1; i < size * size; i++) {
+		if (quantity > 0){
+			game.push(mina) // agregando las minas en la lista
+			quantity -= 1
+		}
+		else
+			game.push(' ') // llenando el resto de blancos
+	}
+
+	desordernar_lista(game)
+	desordernar_lista(game) // randomizando
+}
+
+
+function agregar_numeros_medio(size) {
+	for (let i = 0; i < size * size; i++) {
 		minas_alrededor = 0;
-		condicion = cell.textContent !== mina && [bombs[0], bombs[size - 1], bombs[size * (size - 1)], bombs[(size * size) - 1]] && (i + 1) % size != 0 && (i) % size != 0
+		condicion = game[i] !== mina && i !== 0 && (i + 1) % size != 0 && i % size != 0
 		if (condicion){
 			try {
-			if (bombs[i - size - 1].textContent == mina)
+			if (game[i - size - 1] == mina)
 				minas_alrededor++
 			} catch(err) {}
 			try {
-			if (bombs[i - size].textContent == mina)
+			if (game[i - size] == mina)
 				minas_alrededor++
 			} catch(err) {}
 			try {
-			if (bombs[i - size + 1].textContent == mina)
+			if (game[i - size + 1] == mina)
 				minas_alrededor++
 			} catch(err) {}
 			try {
-			if (bombs[i - 1].textContent == mina)
+			if (game[i - 1] == mina)
 				minas_alrededor++
 			} catch(err) {}
 			try {
-			if (bombs[i + 1].textContent == mina)
+			if (game[i + 1] == mina)
 				minas_alrededor++
 			} catch(err) {}
 			try {
-			if (bombs[i + size - 1].textContent == mina)
+			if (game[i + size - 1] == mina)
 				minas_alrededor++
 			} catch(err) {}
 			try {
-			if (bombs[i + size].textContent == mina)
+			if (game[i + size] == mina)
 				minas_alrededor++
 			} catch(err) {}
 			try {
-			if (bombs[i + size + 1].textContent == mina)
+			if (game[i + size + 1] == mina)
 				minas_alrededor++
 			} catch(err) {}
 		}
-		i++
 		if (condicion && minas_alrededor != 0)
-				cell.textContent = minas_alrededor
+				game[i] = minas_alrededor
 	}
 }
 
 function llenar_esquinas() {
 	let minas_alrededor = 0
-	if (bombs[0].textContent !== mina ) {
-		if (bombs[1].textContent === mina)
+	if (game[0] !== mina ) {
+		if (game[1] === mina)
 			minas_alrededor++
-		if (bombs[size].textContent === mina)
+		if (game[size] === mina)
 			minas_alrededor++
-		if (bombs[size + 1].textContent === mina)
+		if (game[size + 1].textContent === mina)
 			minas_alrededor++
 		if (minas_alrededor !== 0)
-			bombs[0].textContent = minas_alrededor
+			game[0] = minas_alrededor
 	}
 	minas_alrededor = 0
-    if (bombs[size - 1].textContent !== mina ) {
-		if (bombs[size - 2].textContent === mina)
+    if (game[size - 1].textContent !== mina ) {
+		if (game[size - 2].textContent === mina)
 			minas_alrededor++
-		if (bombs[size + size - 1].textContent === mina)
+		if (game[size + size - 1].textContent === mina)
 			minas_alrededor++
-		if (bombs[size + size - 2].textContent === mina)
+		if (game[size + size - 2].textContent === mina)
 			minas_alrededor++
 		if (minas_alrededor !== 0)
-			bombs[size - 1].textContent = minas_alrededor
+			game[size - 1].textContent = minas_alrededor
 	}
     minas_alrededor = 0
     if (bombs[size * (size - 1)].textContent !== mina ) {
@@ -182,4 +185,21 @@ function llenar_columnas () {
 				bombs[i].textContent = minas_alrededor
 		}
 	}
+}
+
+function desordernar_lista(lista) {
+	lista = lista.sort(function () {return Math.random() - 0.5})
+}
+
+function mostrar_bombas() {
+	for (let i = 0; i < game.length; i++)
+		if (game[i] == mina) {
+			cells[i].textContent = '💥'
+		}
+}
+
+function terminar_juego() {
+	div.innerHTML = '<div id="end">Perdiste!</div>'
+	div.style.gridTemplateColumns = ''
+	div.style.placeItems = 'center'
 }
