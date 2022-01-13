@@ -1,23 +1,24 @@
 let game = []
 let mina = '💣'
+let cantidad = 40
 let size = 16
 let abierto = 'grey'
 const div = document.querySelector(".grid")
 const cells = document.getElementsByTagName('span')
+const contador = document.getElementById('counter')
 
 // falta intentar remover los event listeners en la linea 37
 // falta agregar un boton de reintentar
-// falta agregar un contador de banderitas
 // falta agregar la carita que haga :O
 // falta diseño
 
 generate_grid(size)
 añadir_event_listeners(cells)
-insertar_bombas(size, 40)
+insertar_bombas(size, cantidad)
 agregar_numeros_medio(size)
 llenar_esquinas(size)
 llenar_columnas(size)
-
+actualizar_contador()
 
 function generate_grid(size) {
 	div.innerHTML = "<span> </span>\n".repeat(size * size)
@@ -42,14 +43,18 @@ function añadir_event_listeners(cells) {
 				desencadenar(i)
 			else
 				abrir(i)
+			check_win()
 		}
 	}
 	function r_clicked(i) {
 		if (cells[i].style.backgroundColor !== abierto)
-			if (cells[i].textContent === '🚩')
-				cells[i].textContent = ' '
-			else
-				cells[i].textContent = '🚩'
+			if (cells[i].textContent === '🚩'){
+				cells[i].textContent = ' '; 
+				cantidad++}
+			else{
+				cells[i].textContent = '🚩'; 
+				cantidad-=1}
+			actualizar_contador()
 	}
 }
 
@@ -159,7 +164,7 @@ function llenar_esquinas(size) {
 }
 
 function llenar_columnas (size) {
-	for (i = size; i < (size * (size - 2)); i += size) {
+	for (i = size; i < (size * (size - 2) + 1); i += size) {
 		minas_alrededor = 0
 		if (game[i] !== mina) {
 			if (game[i - size] === mina)
@@ -196,27 +201,6 @@ function llenar_columnas (size) {
 	}
 }
 
-function desordernar_lista(lista) {
-	lista = lista.sort(function () {return Math.random() - 0.5})
-}
-
-function mostrar_bombas() {
-	for (let i = 0; i < game.length; i++)
-		if (game[i] == mina) {
-			cells[i].textContent = '💥'
-		}
-}
-
-function terminar_juego() {
-	div.innerHTML = '<div id="end">Perdiste!</div>'
-	div.style.gridTemplateColumns = ''
-	div.style.placeItems = 'center'
-}
-
-function abrir(i) {
-	cells[i].textContent = game[i];
-	cells[i].style.backgroundColor = 'grey'
-}	
 
 function desencadenar(i) {	
 	abrir(i)
@@ -501,5 +485,48 @@ function _abierto(i) {
 		abrir1(i - size - 1))
 	}
 }
+
+function actualizar_contador() {
+	contador.textContent = '🚩: ' + cantidad
+}
+
 function abrir1(i) {
 	return cells[i].style.backgroundColor === abierto}
+
+let copy = cantidad
+function check_win() {
+	let count = 0
+	for (cell of cells){
+		if (cell.style.backgroundColor === abierto)
+			count++
+	}
+	if (count === game.length - copy){
+		div.innerHTML = '<div id="end">Ganaste!<div id="retry" onclick="location.reload()" >Jugar de nuevo</div></div>'
+		div.style.gridTemplateColumns = ''
+		div.style.placeItems = 'center'
+		contador.textContent = '- - -'
+	}
+}
+
+function desordernar_lista(lista) {
+	lista = lista.sort(function () {return Math.random() - 0.5})
+}
+
+function mostrar_bombas() {
+	for (let i = 0; i < game.length; i++)
+		if (game[i] == mina) {
+			cells[i].textContent = '💥'
+		}
+}
+
+function terminar_juego() {
+	div.innerHTML = '<div id="end">Perdiste!<div id="retry" onclick="location.reload()" >Reintentar</div></div>'
+	div.style.gridTemplateColumns = ''
+	div.style.placeItems = 'center'
+	contador.textContent = '- - -'
+}
+
+function abrir(i) {
+	cells[i].textContent = game[i];
+	cells[i].style.backgroundColor = 'grey'
+}	

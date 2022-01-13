@@ -1,3 +1,6 @@
+*{
+    user-select: none;
+}
 body {
     background-color: #323232;
 }
@@ -23,6 +26,39 @@ body {
     height: 150px;
     width: 300px;
     font-size: 30px;
+}
+
+#counter {
+    display: grid;
+    margin: 5px 10px;
+    place-items: center;
+    height: 35px;
+    width: 100px;
+    border-radius: 15px;
+    color: #fff;
+    font-weight: bolder;
+    font-family: Arial;
+    font-size: 20px;
+    background-color: #606060;
+}
+
+#retry {
+    display: grid;
+    place-items: center;
+    background-color: #fff;
+    color: indianred;
+    font-family: Arial;
+    font-weight: bolder;
+    font-size: 20px;
+    height: 50px;
+    width: 200px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition-duration: .4s;
+}
+
+#retry:hover {
+    background-color: #D2D2D2;
 }
 
 span {
