@@ -12,6 +12,18 @@ body {
     padding: 2px 2px;
 }
 
+#end {
+    display: grid;
+    place-items: center;
+    font-weight: bolder;
+    font-family: Arial;
+    color: #fff;
+    background-color: indianred;
+    border-radius: 15px;
+    height: 150px;
+    width: 300px;
+    font-size: 30px;
+}
 
 span {
     display: inline-flex;
