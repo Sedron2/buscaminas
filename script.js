@@ -493,6 +493,7 @@ function abrir1(i) {
 	return cells[i].style.backgroundColor === abierto}
 
 let copy = cantidad
+
 function check_win() {
 	let count = 0
 	for (cell of cells){
@@ -515,6 +516,7 @@ function mostrar_bombas() {
 	for (let i = 0; i < game.length; i++)
 		if (game[i] == mina) {
 			cells[i].textContent = '💥'
+            cells[i].style.backgroundColor = abierto;
 		}
 }
 
@@ -527,5 +529,5 @@ function terminar_juego() {
 
 function abrir(i) {
 	cells[i].textContent = game[i];
-	cells[i].style.backgroundColor = 'grey'
+	cells[i].style.backgroundColor = abierto;
 }	
