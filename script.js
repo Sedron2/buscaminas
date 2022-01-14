@@ -8,7 +8,6 @@ const cells = document.getElementsByTagName('span')
 const contador = document.getElementById('counter')
 
 // falta intentar remover los event listeners en la linea 37
-// falta agregar un boton de reintentar
 // falta agregar la carita que haga :O
 // falta diseño
 
